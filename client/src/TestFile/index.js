@@ -2,7 +2,7 @@ import "./index.css";
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
-function TestFile({testFile, currTest, labelNoFocalMethod, data, focalFilePath, currTestIndex}) {
+function TestFile({testFile, currTest, labelNoFocalMethod, data, focalFilePath, currTestIndex, labelLastLabel, manualLabel}) {
   const startLine = currTest && currTest[0];
   const endLine = currTest && currTest[1];
   return (
@@ -10,9 +10,11 @@ function TestFile({testFile, currTest, labelNoFocalMethod, data, focalFilePath, 
       <div className="horizontalFlex">
         <h3>Test Case</h3>
         <button onClick={() => labelNoFocalMethod()}>No Focal Method</button>
-        {data && focalFilePath in data && currTestIndex < data[focalFilePath]["tests"].length && "label" in data[focalFilePath]["tests"][currTestIndex] && 
-          <span>Current Label: {data[focalFilePath]["tests"][currTestIndex]["label"]}</span>}
+        <button onClick={() => labelLastLabel()}>Same w. Last Label </button>
+        {manualLabel && <span style={{color: 'red'}}> Label manually please </span>}
       </div>
+      {data && focalFilePath in data && currTestIndex < data[focalFilePath]["tests"].length && "label" in data[focalFilePath]["tests"][currTestIndex] && 
+          <span>Current Label: {data[focalFilePath]["tests"][currTestIndex]["label"]}</span>}
       <br/>
       {testFile && <SyntaxHighlighter language="java" theme={docco} wrapLongLines={true}>
         {testFile.slice(startLine, endLine).join('')}

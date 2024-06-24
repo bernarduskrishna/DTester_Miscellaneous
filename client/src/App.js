@@ -7,6 +7,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 function App() {
   const [jsonPathList, setJsonPathList] = useState([]);
   const [jsonPath, setJsonPath] = useState("../dataset_reorganised/itext-java/barcodes.json");
+  const [latestLabel, setLatestLabel] = useState(null);
+  const [manualLabel, setManualLabel] = useState(null);
 
   const [focalFileList, setFocalFileList] = useState([]);
 
@@ -23,28 +25,10 @@ function App() {
   const [currCovLines, setCurrCovLines] = useState(null);
 
   const [reverse_method_lines_dict, setReverseMethodLinesDict] = useState(null);
+  const [method_lines_dict, setMethodLinesDict] = useState(null);
 
-  const labelNoFocalMethod = () => {
-    setData((prevData) => {
-      const new_data = {...prevData};
-      new_data[focalFilePath]["tests"][currTestIndex]["label"] = "<<NO FOCAL METHOD>>";
-
-      return new_data;
-    }, (() => {
-      fetch("http://localhost:9000/testAPI/update_data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({jsonPath: jsonPath, data: data})
-      })
-    })())
-  }
-
-  const label = (line) => {
-    const methodName = line in reverse_method_lines_dict 
-      ? reverse_method_lines_dict[line]
-      : "<<UNRECOGNISED_METHOD>>";
+  const label = (label) => {
+    const methodName = label;
 
     setData((prevData) => {
       const new_data = {...prevData};
@@ -60,6 +44,45 @@ function App() {
         body: JSON.stringify({jsonPath: jsonPath, data: data})
       })
     })())
+  }
+
+  const labelLastLabel = () => {
+    if (latestLabel && latestLabel in method_lines_dict) {
+      // Check whether it's covered
+      const start_end = method_lines_dict[latestLabel];
+      const start = start_end[0];
+      const end = start_end[1];
+
+      for (let i = start; i < end; i++) {
+        if (currCovLines.includes(i)) {
+          label(latestLabel);
+          return;
+        }
+      }
+    }
+
+    if (latestLabel && latestLabel.slice(0, 2) == "<<") {
+      label(latestLabel);
+      return;
+    }
+
+    setManualLabel(true);
+  }
+
+  const labelNoFocalMethod = () => {
+    setLatestLabel("<<NO FOCAL METHOD>>");
+
+    label("<<NO FOCAL METHOD>>")
+  }
+
+  const label_w_line = (line) => {
+    const methodName = line in reverse_method_lines_dict 
+      ? reverse_method_lines_dict[line]
+      : "<<UNRECOGNISED_METHOD>>";
+
+    setLatestLabel(methodName);
+
+    label(methodName);
   }
 
   useEffect(() => {
@@ -90,9 +113,11 @@ function App() {
 
   useEffect(() => {
     if (data) {
+      setManualLabel(false)
       setFocalFile(data[focalFilePath]["class_content"]);
       setTestFile(data[focalFilePath]["test_content"]);
       setReverseMethodLinesDict(data[focalFilePath]["reverse_method_lines_dic"]);
+      setMethodLinesDict(data[focalFilePath]["method_lines_dic"]);
       setFocalFileList(Object.keys(data));
       setTotalTests(data[focalFilePath]["tests"].length);
       if (currTestIndex >= data[focalFilePath]["tests"].length) { return; }
@@ -100,6 +125,22 @@ function App() {
       setCurrCovLines(data[focalFilePath]["tests"][currTestIndex]["covered_lines"])
       setAlreadyLabelled("label" in data[focalFilePath]["tests"][currTestIndex]);
     }
+    const checkKey = (event) => {
+      if (event.key === 'q') {
+        setCurrTestIndex((prev) => prev == 0 ? prev : prev - 1);
+      } else if (event.key === 'w') {
+        console.log(totalTests)
+        setCurrTestIndex((prev) => prev == totalTests - 1 ? prev : prev + 1);
+      } else if (event.key === 'e') {
+        labelLastLabel()
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', checkKey);
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('keydown', checkKey);
   }, [data, focalFilePath, currTestIndex])
 
   useEffect(() => {
@@ -162,9 +203,10 @@ function App() {
       </div>
       <br/>
       <div className="horizontalFlex">
-        <FocalFile focalFile={focalFile} currCovLines={currCovLines} label={label}/>
+        <FocalFile focalFile={focalFile} currCovLines={currCovLines} label={label_w_line}/>
         <TestFile testFile={testFile} currTest={currTest} 
           labelNoFocalMethod={labelNoFocalMethod} data={data} focalFilePath={focalFilePath} currTestIndex={currTestIndex}
+          labelLastLabel={labelLastLabel} manualLabel={manualLabel}
         />
       </div>
       
