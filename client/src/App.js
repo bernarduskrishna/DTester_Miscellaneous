@@ -1,7 +1,7 @@
 import './App.css';
 import FocalFile from './FocalFile';
 import TestFile from './TestFile';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 function App() {
@@ -24,8 +24,14 @@ function App() {
   const [currTest, setCurrTest] = useState(null);
   const [currCovLines, setCurrCovLines] = useState(null);
 
+  const currCovLinesRef = useRef(currCovLines);
+
   const [reverse_method_lines_dict, setReverseMethodLinesDict] = useState(null);
   const [method_lines_dict, setMethodLinesDict] = useState(null);
+
+  useEffect(() => {
+    currCovLinesRef.current = currCovLines;
+  }, [currCovLines])
 
   const label = (label) => {
     const methodName = label;
@@ -54,7 +60,7 @@ function App() {
       const end = start_end[1];
 
       for (let i = start; i < end; i++) {
-        if (currCovLines.includes(i)) {
+        if (currCovLinesRef.current.includes(i)) {
           label(latestLabel);
           return;
         }
@@ -129,7 +135,6 @@ function App() {
       if (event.key === 'q') {
         setCurrTestIndex((prev) => prev == 0 ? prev : prev - 1);
       } else if (event.key === 'w') {
-        console.log(totalTests)
         setCurrTestIndex((prev) => prev == totalTests - 1 ? prev : prev + 1);
       } else if (event.key === 'e') {
         labelLastLabel()
