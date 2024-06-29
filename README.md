@@ -26,6 +26,7 @@ Go to localhost:3000, you should see something like this:
 ![image](https://github.com/bernarduskrishna/dataset_labelling/assets/77195969/d7cb1499-dbc9-4e6c-b4e0-9633f41d2c9f)
 
 The right side shows the current test
+
 The left side shows the focal file, together with the coverage
 
 - Select JSON will allow you to change the module whose data we want to label
