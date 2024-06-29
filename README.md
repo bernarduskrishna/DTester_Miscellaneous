@@ -26,6 +26,7 @@ Go to localhost:3000, you should see something like this:
 ![image](https://github.com/bernarduskrishna/dataset_labelling/assets/77195969/d7cb1499-dbc9-4e6c-b4e0-9633f41d2c9f)
 
 The right side shows the current test
+
 The left side shows the focal file, together with the coverage
 
 - Select JSON will allow you to change the module whose data we want to label
@@ -38,11 +39,15 @@ The left side shows the focal file, together with the coverage
   
   Red means that the focal file still has tests we have not labelled
 - This part allows you to navigate through the tests that are subjected to the focal file
+
+  Alternatively, use "q" and "w" to go to the previous and next test respectively (refer to the "Shortcuts" section at the bottom)
   
   ![image](https://github.com/bernarduskrishna/dataset_labelling/assets/77195969/5b9516dc-f838-44a3-9eec-08859d25d601)
 
 ## How to label
 - Click on any line that is covered (indicated by pale yellow highlighter) from the method you think is the focal method
+
+  OR press "e" to label with the latest label you gave (refer to the "Shortcuts" section at the bottom)
   
   ![image](https://github.com/bernarduskrishna/dataset_labelling/assets/77195969/3140dc49-edda-4903-97d3-19aa2a2d5041)
   
