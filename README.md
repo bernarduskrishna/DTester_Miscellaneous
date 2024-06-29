@@ -64,7 +64,7 @@ The left side shows the focal file, together with the coverage
   
   ![image](https://github.com/bernarduskrishna/dataset_labelling/assets/77195969/c0a7ca2a-aa38-42ee-a7c3-827f65ffdf37)
   
-  This happens whenever you click on a line that is not within a method OR you click on a line that is within a constructor (we do not support constructor labelling for now)
+  This happens whenever you click on a line that is not within a method OR you click on a line that is within a constructor (we do not support constructor labelling for now) OR the method failed to be resolved by the javaparser library during the preprocessing process. It's totally fine, just keep the label as is.
 - Sometimes, you label a data point, but when you come back the next time, the label is gone (this is usually the last thing you label). This is a known bug that I have yet to resolve. But just click the label twice and it should register haha.
 
 ## Shortcuts
