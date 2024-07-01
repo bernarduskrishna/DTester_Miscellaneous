@@ -19,6 +19,11 @@ function TestFile({testFile, currTest, labelNoFocalMethod, data, focalFilePath, 
       {testFile && <SyntaxHighlighter language="java" theme={docco} wrapLongLines={true}>
         {testFile.slice(startLine, endLine).join('')}
       </SyntaxHighlighter>}
+      <br/>
+      <h4>Full test file</h4>
+      {testFile && <SyntaxHighlighter language="java" theme={docco} wrapLongLines={true}>
+        {testFile.join('')}
+      </SyntaxHighlighter>}
     </div>
   );
   }
