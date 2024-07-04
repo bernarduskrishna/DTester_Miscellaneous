@@ -198,7 +198,7 @@ function App() {
         {alreadyLabelled ? <h3 style={{color: 'green'}}>Already Labelled</h3> : <h3 style={{color: 'red'}}>Not Labelled Yet</h3>}
         <span style={{display: 'inline-flex', alignItems: "center"}}> All Tests: </span>
         {/* For each test index, make a button. If it's already labelled, color it green, otherwise red */}
-        {data && focalFilePath in data && data[focalFilePath]["tests"].length == totalTests && Array.from(Array(totalTests).keys()).map((index) => {
+        {data && focalFilePath in data && "tests" in data[focalFilePath] && data[focalFilePath]["tests"].length == totalTests && Array.from(Array(totalTests).keys()).map((index) => {
           return <span className="clickable" style={
             "label" in data[focalFilePath]["tests"][index] 
               ? {color: "green", display: 'inline-flex', alignItems: "center"}

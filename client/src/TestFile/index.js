@@ -15,7 +15,7 @@ function TestFile({testFile, currTest, labelNoFocalMethod, data, focalFilePath, 
         <button onClick={() => labelLastLabel()}>Same w. Last Label </button>
         {manualLabel && <span style={{color: 'red'}}> Label manually please </span>}
       </div>
-      {data && focalFilePath in data && currTestIndex < data[focalFilePath]["tests"].length && "label" in data[focalFilePath]["tests"][currTestIndex] && 
+      {data && focalFilePath in data && "tests" in data[focalFilePath] && currTestIndex < data[focalFilePath]["tests"].length && "label" in data[focalFilePath]["tests"][currTestIndex] && 
           <span>Current Label: {data[focalFilePath]["tests"][currTestIndex]["label"]}</span>}
       <br/>
       {testFile && <SyntaxHighlighter language="java" theme={docco} wrapLongLines={true}>
