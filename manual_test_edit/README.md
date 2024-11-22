@@ -9,3 +9,5 @@ will make the manual edits much easier.
   side by side on VS Code.
 - After manually editing the extracted test, run update_dataset.py to update the dataset.
 - Continue the process with running main.py afterwards until the whole dataset is compilable and executable
+
+move_resources.py adds the resources needed from the original test folder (non-{name}Test.java files)
